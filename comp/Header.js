@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React from 'react';
 
-const Header = () => {
+const Header = ({sideMenuToggler}) => {
+
   return (
     <View style={styles.body} >
         <View style={styles.compLogo}>
@@ -13,7 +14,7 @@ const Header = () => {
             </View>
         </View>
         
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => sideMenuToggler(true)}>
            <Image source={require('../assets/images/menu.png')} style={styles.menuIcon}/> 
         </TouchableOpacity>
     </View>
@@ -26,7 +27,8 @@ const styles = StyleSheet.create({
    body: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    width: '100%'
    },
     logo: {
         width: 70,
@@ -40,12 +42,10 @@ const styles = StyleSheet.create({
         objectFit: 'cover'
     },
     title: {
-        color: '#FFF',
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: 'bold'
     },
     slogan: {
-        color: '#FFF',
         fontSize: 10
     },
     compLogo: {
