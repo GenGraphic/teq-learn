@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native';
 import React, {useState} from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import Header from '../comp/Header';
@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <LinearGradient colors={['#0074D9', '#FFFFFF']} style={styles.bkg} start={{x: 0.1, y: 0.2}} end={{x: 0.6, y: 0.7}}>
         {sideMenu &&
-            <SideMenu toggler={setSideMenu}/>
+            <SideMenu toggler={setSideMenu} />
         }
         <View style={styles.safeView}>
             <Header  sideMenuToggler={setSideMenu}/>

@@ -44,30 +44,54 @@ const SideMenu = ({ toggler }) => {
                         </View>
 
                         <View>
-                            <TouchableOpacity style={styles.link} onPress={() => navigator.navigate('Home')}>
+                            <TouchableOpacity style={styles.link} onPress={() => {
+                                toggler(false);
+                                navigator.navigate('Home');
+                            }}
+                            >
                                 <Image style={styles.icon} source={require('../assets/images/home.png')}/>
                                 <Text style={styles.linkText}>Home</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.link} onPress={() => navigator.navigate('Services')}>
+                            <TouchableOpacity style={styles.link} onPress={() => {
+                                toggler(false);
+                                navigator.navigate('Services');
+                                }}
+                            >
                                 <Image style={styles.icon} source={require('../assets/images/services.png')}/>
                                 <Text style={styles.linkText}>SERVICES</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.link} onPress={() => navigator.navigate('MyProject')}>
+                            <TouchableOpacity style={styles.link} onPress={() => {
+                                toggler(false);
+                                navigator.navigate('MyProject');
+                                }}
+                            >
                                 <Image style={styles.icon} source={require('../assets/images/project.png')}/>
                                 <Text style={styles.linkText}>MY PROJECT</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.link} onPress={() => navigator.navigate('Learning')}>
+                            <TouchableOpacity style={styles.link} onPress={() => {
+                                toggler(false);
+                                navigator.navigate('Learning');
+                                }}
+                            >
                                 <Image style={styles.icon} source={require('../assets/images/brain.png')}/>
                                 <Text style={styles.linkText}>LEARNING SYSTEM</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.link} onPress={() => navigator.navigate('Contact')}>
+                            <TouchableOpacity style={styles.link} onPress={() => {
+                                toggler(false);
+                                navigator.navigate('Contact');
+                                }}
+                            >
                                 <Image style={styles.icon} source={require('../assets/images/support.png')}/>
                                 <Text style={styles.linkText}>CONTACT</Text>
                             </TouchableOpacity>
                         </View>
                         
                         <View>
-                            <TouchableOpacity style={styles.loginBtn}>
+                            <TouchableOpacity style={styles.loginBtn} onPress={() => {
+                                toggler(false);
+                                navigator.navigate('LogIn');
+                                }}
+                            >
                                 <Text style={styles.loginBtnText}>LOGIN</Text>
                             </TouchableOpacity>
                         </View>
