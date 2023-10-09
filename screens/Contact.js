@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, KeyboardAvoidingView, Platform, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, KeyboardAvoidingView, Platform, TouchableOpacity, Keyboard, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import React, {useState} from 'react';
 import SideMenu from '../comp/SideMenu';
 import Header from '../comp/Header';
@@ -7,35 +7,36 @@ import { LinearGradient } from 'expo-linear-gradient';
 const Contact = () => {
   const [sideMenu, setSideMenu] = useState(false);
   return (
-    <LinearGradient colors={['#0074D9', '#FFFFFF']} style={styles.bkg} start={{x: 0.1, y: 0.2}} end={{x: 0.6, y: 0.7}}>
-      {sideMenu &&
-          <SideMenu toggler={setSideMenu} />
-      }
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
-        <SafeAreaView style={styles.safeView}>
-          <Header sideMenuToggler={setSideMenu}/>
-          
-          <TouchableWithoutFeedback style={styles.formCont} onPress={Keyboard.dismiss}> 
-            <View style={styles.form}> 
-              <View style={styles.emailIconCont}>
-                <Image style={styles.emailIcon} source={require('../assets/images/mail.png')}/>
-              </View>
+    <ImageBackground style={styles.bkg} resizeMode='cover' source={require('../assets/images/login_bkg.jpg')}>
+      <View style={styles.whiteFilter}>
+        {sideMenu &&
+            <SideMenu toggler={setSideMenu} />
+        }
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
+          <SafeAreaView style={styles.safeView}>
+            <Header sideMenuToggler={setSideMenu}/>
+            
+            <TouchableWithoutFeedback style={styles.formCont} onPress={Keyboard.dismiss}> 
+              <View style={styles.form}> 
+                <View style={styles.emailIconCont}>
+                  <Image style={styles.emailIcon} source={require('../assets/images/mail.png')}/>
+                </View>
 
-              <Text style={styles.title}>Send us an E-mail</Text>
+                <Text style={styles.title}>Send us an E-mail</Text>
 
-              <TextInput style={styles.textInput} placeholder='Your name'/>
-              <TextInput style={styles.textInput} placeholder='E-mail Adress'/>
-              <TextInput editable multiline style={styles.textInputMessage} placeholder='Your message...'/>
+                <TextInput style={styles.textInput} placeholder='Your name'/>
+                <TextInput style={styles.textInput} placeholder='E-mail Adress'/>
+                <TextInput editable multiline style={styles.textInputMessage} placeholder='Your message...' textAlignVertical='top'/>
 
-              <TouchableOpacity style={styles.sendBtn}>
-                <Image style={styles.sendBtnIcon} source={require('../assets/images/plane.png')}/>
-                <Text style={styles.sendBtnText}>SEND E-MAIL</Text>
-              </TouchableOpacity>
-            </View >
-          </TouchableWithoutFeedback>
-        </SafeAreaView>
-      </KeyboardAvoidingView>
-    </LinearGradient>
+                <TouchableOpacity style={styles.sendBtn}>
+                  <Text style={styles.sendBtnText}>SEND E-MAIL</Text>
+                </TouchableOpacity>
+              </View >
+            </TouchableWithoutFeedback>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      </View>
+    </ImageBackground>
   )
 }
 
@@ -49,31 +50,28 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 20,
     marginRight: 20,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingTop: 50,
   },
+  whiteFilter: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)'
+  },  
   formCont: {
     flex: 1,
     justifyContent: 'center'
   },
   form: {
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: 'rgba(219, 219, 219, 0.5)',
     width: '100%',
     height: '80%',
     borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
     alignItems: 'center',
     paddingTop: 50,
     paddingBottom: 20
   },
   emailIconCont: {
-    backgroundColor: '#FF851B',
+    backgroundColor: '#464E78',
     width: 100,
     height: 100,
     borderRadius: 50,
@@ -106,14 +104,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flex: 1,
     marginBottom: 20,
-    minHeight: 40
-  },
-  sendBtnIcon: {
-    width: 20,
-    height: 20
+    minHeight: 40,
   },
   sendBtn: {
-    backgroundColor: '#FF851B',
+    backgroundColor: '#464E78',
     width: 200,
     height: 30,
     borderRadius: 15,

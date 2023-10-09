@@ -9,7 +9,7 @@ const Header = ({sideMenuToggler}) => {
             <Image source={require('../assets/images/logo.jpg')} style={styles.logo}/>
       
             <View>
-                <Text style={styles.title}>TEQLearn</Text>
+                <Text style={styles.title}>ergonTEQ</Text>
                 <Text style={styles.slogan}>Project | Program | Portfolio Excellence</Text>
             </View>
         </View>
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
    body: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
     width: '100%'
    },
     logo: {
@@ -37,16 +36,15 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     menuIcon: {
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
         objectFit: 'cover'
     },
     title: {
-        fontSize: 25,
-        fontWeight: 'bold'
+        fontSize: 20,
     },
     slogan: {
-        fontSize: 10
+        fontSize: 12
     },
     compLogo: {
         flexDirection: 'row',

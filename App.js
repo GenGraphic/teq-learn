@@ -27,7 +27,7 @@ export default function App() {
           <Stack.Screen name='LogIn' component={LogIn} options={{headerShown: false}} />
           <Stack.Screen name='Contact' component={Contact} options={{headerShown: false}} />
           <Stack.Screen name='MyProject' component={MyProject} options={{headerShown: false}} />
-          <Stack.Screen name='Learning' component={Learning} options={{headerShown: true}} />
+          <Stack.Screen name='Learning' component={Learning} options={{headerShown: false}} />
         </Stack.Navigator>
     </NavigationContainer>
     

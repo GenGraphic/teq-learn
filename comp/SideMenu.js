@@ -34,13 +34,13 @@ const SideMenu = ({ toggler }) => {
     return (
         <View style={styles.body}>
             <Animated.View style={[styles.animatedContainer, { right: slideToLeft }]}>
-                <LinearGradient style={styles.cont} colors={['rgba(255,133,27,0.7)', 'rgba(0, 116, 217, 0.7)']} start={{ x: 0.1, y: 0.2 }} end={{ x: 0.6, y: 0.7 }}>
+                <LinearGradient style={styles.cont} colors={['rgba(0,0,0,0.6)', 'rgba(144, 144, 152, 0.6)']} start={{ x: 0.1, y: 0.2 }} end={{ x: 0.6, y: 0.7 }}>
                     <SafeAreaView style={styles.subCont}>
                         <View>
                             <TouchableOpacity onPress={closeMenu}>
                                 <Image style={styles.closeIcon} source={require('../assets/images/close-button.png')} />
                             </TouchableOpacity>
-                            <Text style={styles.title}>TEQLearn</Text>
+                            <Text style={styles.title}>ergonTEQ</Text>
                         </View>
 
                         <View>
@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
     title: {
         color: '#FFF',
         fontSize: 20,
-        fontWeight: 'bold',
         textAlign: 'center'
     },
     closeIcon: {
@@ -141,16 +140,16 @@ const styles = StyleSheet.create({
         height: 25
     },
     loginBtn: {
-        backgroundColor: '#FF851B',
-        padding: 10,
+        backgroundColor: '#464E78',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: '50%'
+        height: 40,
+        borderRadius: 20
 
     },
     loginBtnText: {
         color: '#FFF',
-        fontWeight: 'bold'
+        fontSize: 18,
     },
     icon: {
         width: 25,
