@@ -12,6 +12,7 @@ import LogIn from './screens/LogIn';
 import Contact from './screens/Contact';
 import MyProject from './screens/MyProject';
 import Learning from './screens/Learning';
+import AddUser from './screens/AddUser';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -28,6 +29,7 @@ export default function App() {
           <Stack.Screen name='Contact' component={Contact} options={{headerShown: false}} />
           <Stack.Screen name='MyProject' component={MyProject} options={{headerShown: false}} />
           <Stack.Screen name='Learning' component={Learning} options={{headerShown: false}} />
+          <Stack.Screen name='AddUser' component={AddUser} options={{headerShown: false}} />
         </Stack.Navigator>
     </NavigationContainer>
     

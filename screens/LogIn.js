@@ -2,15 +2,79 @@ import { StyleSheet, Text, View, ImageBackground, SafeAreaView, KeyboardAvoiding
 import React, {useState} from 'react';
 import SideMenu from '../comp/SideMenu';
 import Header from '../comp/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const LogIn = () => {
+const LogIn = ({navigation}) => {
   const [sideMenu, setSideMenu] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const logUserIn = async () => {
+    if (userName.length < 1 || userPassword.length < 1) {
+      showError('Please fill both fields.', 2000);
+    } else {
+      const formData = new FormData();
+      formData.append('userName', userName);
+      formData.append('userPassword', userPassword);
+  
+      try {
+        const response = await fetch('https://ergonteq.com/api/logUserIn.php', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          
+          // Dismiss Keyboard
+          Keyboard.dismiss();
+  
+          // Show the error message
+          setErrorMessage(data.message);
+  
+          // Hide the Error after 2 seconds
+          setTimeout(() => {
+            setErrorMessage('');
+          }, 2000);
+  
+          if (data.success) {
+            // Store the token to be used to remember the user
+            await AsyncStorage.setItem('userToken', data.token);
+  
+            // Navigate to the 'Home' screen
+            navigation.navigate('Home');
+          }
+        } else {
+          console.log('Network response was not ok');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const showError = (text, time) => {
+    //Show the error message
+    setErrorMessage(text);
+
+    //after time, hide the message
+    setTimeout(() => {
+      setErrorMessage('');
+    },time)
+  }
+ 
   return (
     <ImageBackground style={styles.bkg} resizeMode='cover' source={require('../assets/images/login_bkg.jpg')}>
       <View style={styles.whiteFilter}>
         {sideMenu &&
           <SideMenu toggler={setSideMenu} />
+        }
+        {errorMessage.length > 0 &&
+          <View style={styles.errorMessageBKG}>
+            <Text style={styles.errorMessageText}>{errorMessage}</Text>
+          </View>
         }
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
             <SafeAreaView style={styles.safeView}>
@@ -28,17 +92,17 @@ const LogIn = () => {
                     <View style={styles.textInputIconBkg}>
                       <Image style={styles.textInputIcon} source={require('../assets/images/userFull.png')}/>
                     </View>
-                    <TextInput style={styles.textInputField} placeholder='Username'/>
+                    <TextInput onChangeText={(e) => setUserName(e)} style={styles.textInputField} placeholder='Username'/>
                   </View>
 
                   <View style={styles.textInput}>
                     <View style={styles.textInputIconBkg}>
                       <Image style={styles.textInputIcon} source={require('../assets/images/padlock.png')}/>
                     </View>
-                    <TextInput style={styles.textInputField} placeholder='Password' secureTextEntry/>
+                    <TextInput onChangeText={(e) => setUserPassword(e)} style={styles.textInputField} placeholder='Password' secureTextEntry/>
                   </View>
 
-                  <TouchableOpacity style={styles.loginBtn}>
+                  <TouchableOpacity onPress={logUserIn} style={styles.loginBtn}>
                     <Text style={styles.loginBtnText}>LOGIN</Text>
                   </TouchableOpacity>
                 </View >
@@ -147,5 +211,17 @@ const styles = StyleSheet.create({
   },
   textInputField: {
     flex: 1
+  },
+  errorMessageBKG: {
+    position: 'absolute',
+    bottom: 50,
+    width: '100%',
+    justifyContent:'center',
+    alignItems: 'center',
+  },
+  errorMessageText: {
+    backgroundColor: 'rgba(52, 58, 64, 0.7)', // Add your background color here
+    padding: 6,
+    color: '#FFF'
   },
 })

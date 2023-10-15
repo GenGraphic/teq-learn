@@ -2,15 +2,70 @@ import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, KeyboardAvoidin
 import React, {useState} from 'react';
 import SideMenu from '../comp/SideMenu';
 import Header from '../comp/Header';
-import { LinearGradient } from 'expo-linear-gradient';
+
 
 const Contact = () => {
   const [sideMenu, setSideMenu] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userMessage, setUserMessage] = useState('');
+  const [myError, setMyError] = useState('');
+
+  const sendEmail = () => {
+    const formData = new FormData();
+    formData.append('userName', userName);
+    formData.append('userMessage', userMessage);
+    formData.append('userEmail', userEmail);
+
+    //Non Empty fields
+    if(userEmail.length > 0 && userName.length > 0 && userMessage.length > 0) {
+
+      fetch('https://ergonteq.com/api/contactEmail.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        //dismiss Keyboart
+        Keyboard.dismiss();
+
+        //show Response
+        setMyError(data.message);
+        
+        //After 2 seconds hide the error
+        setTimeout(() => {
+          setMyError('');
+        }, 2000)
+
+        //if the email was sent, the input fields should be empty
+        if(data.success) {
+          setUserEmail('');
+          setUserMessage('');
+          setUserName('');
+        }
+      })
+      .catch(error => console.log(error))
+    } else {
+      setMyError('Fill al the fields');
+
+      //hide the Error
+      setTimeout(() => {
+        setMyError('');
+      },2000)
+    }
+  }
+
+
   return (
     <ImageBackground style={styles.bkg} resizeMode='cover' source={require('../assets/images/login_bkg.jpg')}>
       <View style={styles.whiteFilter}>
         {sideMenu &&
             <SideMenu toggler={setSideMenu} />
+        }
+        {myError.length > 0 && 
+          <View style={styles.errorMessageBKG}>
+            <Text style={styles.errorMessageText}>{myError}</Text>
+          </View>
         }
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
           <SafeAreaView style={styles.safeView}>
@@ -24,11 +79,19 @@ const Contact = () => {
 
                 <Text style={styles.title}>Send us an E-mail</Text>
 
-                <TextInput style={styles.textInput} placeholder='Your name'/>
-                <TextInput style={styles.textInput} placeholder='E-mail Adress'/>
-                <TextInput editable multiline style={styles.textInputMessage} placeholder='Your message...' textAlignVertical='top'/>
+                <TextInput style={styles.textInput} value={userName} placeholder='Your name' onChangeText={(e) => setUserName(e)}/>
+                <TextInput style={styles.textInput} value={userEmail} placeholder='E-mail Adress' onChangeText={(e) => setUserEmail(e)}/>
+                <TextInput 
+                  editable 
+                  multiline 
+                  value={userMessage} 
+                  style={styles.textInputMessage} 
+                  placeholder='Your message...' 
+                  textAlignVertical='top' 
+                  onChangeText={(e) => setUserMessage(e)}
+                />
 
-                <TouchableOpacity style={styles.sendBtn}>
+                <TouchableOpacity style={styles.sendBtn} onPress={sendEmail}>
                   <Text style={styles.sendBtnText}>SEND E-MAIL</Text>
                 </TouchableOpacity>
               </View >
@@ -128,5 +191,18 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontWeight: 'bold',
     fontSize: 14
+  },
+  errorMessageBKG: {
+    position: 'absolute',
+    bottom: 50,
+    width: '100%',
+    justifyContent:'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  errorMessageText: {
+    backgroundColor: 'rgba(52, 58, 64, 0.8)', // Add your background color here
+    padding: 6,
+    color: '#FFF'
   },
 })

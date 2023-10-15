@@ -1,12 +1,19 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, Animated } from 'react-native';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const SideMenu = ({ toggler }) => {
     const slideToLeft = useRef(new Animated.Value(-300)).current; // Initial Value
     const navigator = useNavigation();
+    const [isOn, setIsOn] = useState(false);
+    const [adminIsOn, setAdminIsOn] = useState(false);
+
+    useEffect(() => {
+        userIsOn()
+    }, []);
 
     //animation to Slide in
     useEffect(() => {
@@ -29,6 +36,31 @@ const SideMenu = ({ toggler }) => {
         setTimeout(() => {
             toggler(false)
         }, 300)
+    }
+
+    //Check if the user is signed in or not
+    const userIsOn = async () => {
+        //check if the token is admin, that means admin is online
+        if (await AsyncStorage.getItem('userToken') === 'admin' ) {
+            setAdminIsOn(true);
+        }
+
+        //check id any user is online
+        if(await AsyncStorage.getItem('userToken')) {
+            setIsOn(true);
+        } else {
+            setIsOn(false);
+            setAdminIsOn(false);
+        }
+    }
+ 
+    const signOutUser = async () => {
+        setIsOn(false);
+        setAdminIsOn(false);
+
+        await AsyncStorage.removeItem('userToken');
+
+        navigator.navigate('LogIn');
     }
 
     return (
@@ -84,16 +116,32 @@ const SideMenu = ({ toggler }) => {
                                 <Image style={styles.icon} source={require('../assets/images/support.png')}/>
                                 <Text style={styles.linkText}>CONTACT</Text>
                             </TouchableOpacity>
+                            { adminIsOn &&
+                                <TouchableOpacity style={styles.link} onPress={() => {
+                                    toggler(false);
+                                    navigator.navigate('AddUser');
+                                    }}
+                                >
+                                    <Image style={styles.icon} source={require('../assets/images/user.png')}/>
+                                    <Text style={styles.linkText}>ADD USER</Text>
+                                </TouchableOpacity>
+                            }
                         </View>
                         
                         <View>
-                            <TouchableOpacity style={styles.loginBtn} onPress={() => {
-                                toggler(false);
-                                navigator.navigate('LogIn');
-                                }}
-                            >
-                                <Text style={styles.loginBtnText}>LOGIN</Text>
-                            </TouchableOpacity>
+                            {isOn ? 
+                               <TouchableOpacity style={[styles.loginBtn, {backgroundColor: '#d00000'}]} onPress={signOutUser}>
+                                    <Text style={styles.loginBtnText}>SIGN OUT</Text>
+                                </TouchableOpacity>
+                            : 
+                                <TouchableOpacity style={styles.loginBtn} onPress={() => {
+                                    toggler(false);
+                                    navigator.navigate('LogIn');
+                                    }}
+                                >
+                                    <Text style={styles.loginBtnText}>LOGIN</Text>
+                                </TouchableOpacity>
+                            }
                         </View>
                     </SafeAreaView>
                 </LinearGradient>
