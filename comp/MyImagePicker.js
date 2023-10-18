@@ -1,24 +1,29 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react';
+import React from 'react';
 import * as ImagePicker from 'expo-image-picker';
 
-const MyImagePicker = () => {
-  const [newStepImage, setNewStepImage] = useState(null);
+const MyImagePicker = ({ showError, setNewStepImage }) => {
+  
+  async function pickImage() {
 
-  const pickImage = async() => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      allowsEditing: false, // higher res on iOS
       aspect: [4, 3],
-      quality: 1
     });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setNewStepImage(result.assets[0].uri);
+  
+    if (result.cancelled) {
+      return;
     }
+  
+    let localUri = result.uri;
+    let filename = localUri.split('/').pop();
+  
+    let match = /\.(\w+)$/.exec(filename);
+    let type = match ? `image/${match[1]}` : `image`;
+  
+    setNewStepImage({ uri: localUri, name: filename, type });
   }
+
   return (
     <TouchableOpacity style={styles.Btn} onPress={pickImage}>
       <Text style={styles.text}>Select Image</Text>
@@ -33,13 +38,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 30,
     backgroundColor: '#464E78',
-    marginBottom: 10,
+    marginBottom: 30,
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center'
   },
   text: {
     color: '#FFF',
-
   }
 })

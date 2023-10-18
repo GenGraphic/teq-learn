@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View, ImageBackground, FlatList, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Image, TextInput, Platform } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Image, TextInput, Platform } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import SideMenu from '../comp/SideMenu';
 import Header from '../comp/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { ScrollView } from 'react-native-virtualized-view';
 import MyImagePicker from '../comp/MyImagePicker';
 
 const Projects = ({navigation}) => {
@@ -17,7 +16,8 @@ const Projects = ({navigation}) => {
   const [projectsList, setProjectsList] = useState(null);
   const [projectsID, setProjectsId] = useState([]);
   const [newStepTitle, setNewStepTitle] = useState('');
-  const [newStepConten, setNewStepContent] = useState('');
+  const [newStepContent, setNewStepContent] = useState('');
+  const [newStepImage, setNewStepImage] = useState(null);
 
   useEffect(() => {
     const checkUserIsAdmin = async () => {
@@ -38,7 +38,40 @@ const Projects = ({navigation}) => {
     }
   }, [selectedProjectID])
 
-  //Send new Step
+  //Send new Step to the backend
+  const addNewStep = () => {
+    if(newStepTitle || newStepContent || newStepImage) {
+      const formData = new FormData();
+      formData.append('projectID', selectedProjectID);
+      formData.append('projectName', selectedProject.project_title);
+      formData.append('newStepTitle', newStepTitle);
+      formData.append('newStepContent', newStepContent);
+      formData.append('newStepImage', newStepImage);
+
+      fetch('https://ergonteq.com/api/addNewStep.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        //show the message API sends
+        showError(data.message, 2000);
+
+        if(data.success) {
+          //handle success
+          //empty all fields
+          setNewStepContent('');
+          setNewStepTitle('');
+          setNewStepImage(null);
+
+          //fetch the projects again
+          fetchProjects();
+        }
+      })
+    } else {
+      showError('Fill all fields and add an Image.', 3000)
+    }
+  }
 
 
   //fetch Projects
@@ -104,8 +137,7 @@ const Projects = ({navigation}) => {
       showError('Error converting data: ' + error.message, 5000);
     }
   }
-
-
+  
   return (
     <ImageBackground style={styles.bkg} resizeMode='cover' source={require('../assets/images/login_bkg.jpg')}>
       <View style={styles.whiteFilter}>
@@ -119,7 +151,9 @@ const Projects = ({navigation}) => {
         }
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{flex: 1}}>
             <SafeAreaView style={styles.safeView}>
+
               <Header sideMenuToggler={setSideMenu}/>
+              
                 <TouchableWithoutFeedback style={styles.formCont} onPress={Keyboard.dismiss}> 
                   <View style={{flex: 1}}>
                     <DropDownPicker
@@ -140,7 +174,7 @@ const Projects = ({navigation}) => {
                         
                         <View style={styles.textInput}>
                             <Text>Add Tittle</Text>
-                            <TextInput style={styles.textInputField} onChangeText={(e) => setNewStepTitle(e)} placeholder='Title'/>
+                            <TextInput value={newStepTitle} style={styles.textInputField} onChangeText={(e) => setNewStepTitle(e)} placeholder='Title'/>
                         </View>
 
                         <View style={styles.textInput}>
@@ -152,13 +186,14 @@ const Projects = ({navigation}) => {
                                 style={styles.textAreaField} 
                                 placeholder='Write a description of this step' 
                                 secureTextEntry
+                                value={newStepContent}
                                 onChangeText={(e) => setNewStepContent(e)}
                             />
                         </View>
 
-                        <MyImagePicker />
+                        <MyImagePicker showError={showError} setNewStepImage={setNewStepImage}/>
 
-                        <TouchableOpacity style={styles.loginBtn}>
+                        <TouchableOpacity style={styles.loginBtn} onPress={addNewStep}>
                             <Text style={styles.loginBtnText}>SAVE</Text>
                         </TouchableOpacity>
 

@@ -58,7 +58,7 @@ const SideMenu = ({ toggler }) => {
         setIsOn(false);
         setAdminIsOn(false);
 
-        await AsyncStorage.removeItem('userToken');
+        const token = await AsyncStorage.removeItem('userToken');
 
         navigator.navigate('LogIn');
     }
