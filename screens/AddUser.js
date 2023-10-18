@@ -9,7 +9,7 @@ const AddUser = ({navigation}) => {
   const [sideMenu, setSideMenu] = useState(false);
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
-  const [projectID, setProjectID] = useState('');
+  const [projectTitle, setProjectTitle] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
 
@@ -42,10 +42,10 @@ const AddUser = ({navigation}) => {
     const formData = new FormData();
     formData.append('userName', userName);
     formData.append('userPassword', userPassword);
-    formData.append('projectID', projectID);
+    formData.append('projectTitle', projectTitle);
 
-    if(userName.length < 1 || userPassword < 1) {
-      setErrorMessage("Fill Name and Password!");
+    if(userName.length < 1 || userPassword < 1 || projectTitle.length < 1) {
+      setErrorMessage("Please fill all the fields");
     } else {
       fetch('https://ergonteq.com/api/addNewUser.php', {
         method: 'POST',
@@ -58,7 +58,7 @@ const AddUser = ({navigation}) => {
 
         //if success, empty the Fields
         if(data.success) {
-          setProjectID('');
+          setProjectTitle('');
           setUserName('');
           setUserPassword('');
         }
@@ -117,7 +117,7 @@ const AddUser = ({navigation}) => {
                   <View style={styles.textInputIconBkg}>
                     <Image style={styles.textInputIcon} source={require('../assets/images/project_id.png')}/>
                   </View>
-                  <TextInput value={projectID} onChangeText={(e) => setProjectID(e)} style={styles.textInputField} placeholder='Project ID' />
+                  <TextInput value={projectTitle} onChangeText={(e) => setProjectTitle(e)} style={styles.textInputField} placeholder='Project Title' />
                 </View>
 
                 <TouchableOpacity style={styles.loginBtn} onPress={createTwoButtonAlert}>

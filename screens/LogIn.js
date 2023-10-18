@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback, TouchableOpacity, Keyboard, Image, TextInput, Platform } from 'react-native';
 import React, {useState} from 'react';
 import SideMenu from '../comp/SideMenu';
 import Header from '../comp/Header';
@@ -107,6 +107,8 @@ const LogIn = ({navigation}) => {
                   </TouchableOpacity>
                 </View >
               </TouchableWithoutFeedback>
+
+              <Text></Text>
             </SafeAreaView>
           </KeyboardAvoidingView>
       </View>
@@ -128,8 +130,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 20,
     marginRight: 20,
-    gap: 150,
     paddingTop: 50,
+    justifyContent: 'space-between',
   },
   formCont: {
     flex: 1,
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     paddingTop: 50,
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   emailIconCont: {
     backgroundColor: '#464E78',

@@ -126,6 +126,16 @@ const SideMenu = ({ toggler }) => {
                                     <Text style={styles.linkText}>ADD USER</Text>
                                 </TouchableOpacity>
                             }
+                            { adminIsOn &&
+                                <TouchableOpacity style={styles.link} onPress={() => {
+                                    toggler(false);
+                                    navigator.navigate('AdminProjects');
+                                    }}
+                                >
+                                    <Image style={styles.icon} source={require('../assets/images/project-admin.png')}/>
+                                    <Text style={styles.linkText}>PROJECTS</Text>
+                                </TouchableOpacity>
+                            }
                         </View>
                         
                         <View>
