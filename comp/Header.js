@@ -6,7 +6,7 @@ const Header = ({sideMenuToggler}) => {
   return (
     <View style={styles.body} >
         <View style={styles.compLogo}>
-            <Image source={require('../assets/images/logo.jpg')} style={styles.logo}/>
+            <Image source={require('../assets/images/logo.png')} style={styles.logo}/>
       
             <View>
                 <Text style={styles.title}>ergonTEQ</Text>

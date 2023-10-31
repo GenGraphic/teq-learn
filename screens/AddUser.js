@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback, TouchableOpacity, Alert, Keyboard, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, SafeAreaView, KeyboardAvoidingView, TouchableWithoutFeedback, TouchableOpacity, Alert, Keyboard, Image, TextInput, Platform } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import SideMenu from '../comp/SideMenu';
 import Header from '../comp/Header';
@@ -125,6 +125,8 @@ const AddUser = ({navigation}) => {
                 </TouchableOpacity>
               </View >
             </TouchableWithoutFeedback>
+
+            <Text></Text>
           </SafeAreaView>
         </KeyboardAvoidingView>
       </View>
@@ -146,8 +148,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 20,
     marginRight: 20,
-    gap: 150,
     paddingTop: 50,
+    justifyContent: 'space-between',
   },
   formCont: {
     flex: 1,
