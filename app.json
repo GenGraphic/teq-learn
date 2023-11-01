@@ -10,7 +10,7 @@
     ],
     "name": "ergonTEQ",
     "slug": "teq-learn",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -26,6 +26,7 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 2 ,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
